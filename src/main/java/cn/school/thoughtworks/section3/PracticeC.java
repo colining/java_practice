@@ -1,5 +1,4 @@
 package cn.school.thoughtworks.section3;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +12,9 @@ public class PracticeC {
 
     private Map<String, Integer> getStringIntegerMap(Map<String, List<String>> object, Map<String, Integer> map) {
         for (List<String> stringList : object.values()) {
-            for (String s : stringList) {
-                if (map.containsKey(s)) {
-                    map.put(s, map.get(s) - map.get(s)/3);
+            for (String str : stringList) {
+                if (map.containsKey(str)) {
+                    map.put(str, map.get(str) - map.get(str)/3);
                 }
             }
         }

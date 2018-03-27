@@ -7,9 +7,9 @@ public class PracticeA {
     Map<String,Integer> createUpdatedCollection(Map<String,Integer> collectionA, Map<String,List<String>> object) {
         //实现练习要求，并改写该行代码。
         for (List<String> stringList : object.values()) {
-            for (String s : stringList) {
-                if (collectionA.containsKey(s)) {
-                    collectionA.put(s, collectionA.get(s) - 1);
+            for (String string : stringList) {
+                if (collectionA.containsKey(string)) {
+                    collectionA.put(string, collectionA.get(string) - 1);
                 }
             }
         }
