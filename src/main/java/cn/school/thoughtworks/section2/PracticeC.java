@@ -1,36 +1,35 @@
 package cn.school.thoughtworks.section2;
 
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PracticeC {
     Map<String, Integer> countSameElements(List<String> collection1) {
-        //实现练习要求，并改写该行代码。
-        Map<String, Integer> hashMap = new HashMap<>();
-        for (String str : collection1) {
-            int value;
-            String key;
-            if (hashMap.containsKey(str)) {
-                value = hashMap.get(str) + 1;
-                key = str;
-            } else if (getNumber(str).length() > 0) {
-                if (hashMap.containsKey(String.valueOf(str.charAt(0)))) {
-                    key = String.valueOf(str.charAt(0));
-                    value = hashMap.get(String.valueOf(str.charAt(0))) + Integer.parseInt(getNumber(str));
+        Stream<String> stringStream = collection1.stream().filter(s -> s.length()<2);
+        Map<String, Integer> result = stringStream.collect(Collectors.toMap(s -> s, s -> 1, Integer::sum));
+        List<String> list = collection1.stream().filter(s -> s.length()>1).collect(Collectors.toList());
+        list.forEach(s -> {
+            if (getNumber(s).length() > 0) {
+                if (result.containsKey(String.valueOf(s.charAt(0)))) {
+                    String key = String.valueOf(s.charAt(0));
+                    int value = result.get(String.valueOf(s.charAt(0))) + Integer.parseInt(getNumber(s));
+                    result.put(key,value);
                 } else{
-                    key = String.valueOf(str.charAt(0));
-                    value = Integer.valueOf(getNumber(str));
+                    String key = String.valueOf(s.charAt(0));
+                    int value = Integer.valueOf(getNumber(s));
+                    result.put(key,value);
+
                 }
-            } else {
-                key = str;
-                value = 1;
+
             }
-            hashMap.put(key, value);
-        }
-        return hashMap;
+        });
+        return result;
     }
 
     private String getNumber(String s) {
@@ -40,4 +39,5 @@ public class PracticeC {
         return m.replaceAll("").trim();
     }
 }
+
 

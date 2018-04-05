@@ -1,8 +1,10 @@
 package cn.school.thoughtworks.section3;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PracticeD {
     Map<String, Integer> createUpdatedCollection(List<String> collectionA, Map<String, List<String>> object) {
@@ -13,28 +15,23 @@ public class PracticeD {
     }
 
     Map<String, Integer> countSameElements(List<String> collection1) {
-        //实现练习要求，并改写该行代码。
-        Map<String, Integer> hashMap = new HashMap<>();
-        for (String s : collection1) {
-            if (hashMap.containsKey(s)) {
-                hashMap.put(s, hashMap.get(s) + 1);
-            } else if (s.contains("-")) {
-                hashMap.put(String.valueOf(s.charAt(0)), s.charAt(2) - 48);
-            } else {
-                hashMap.put(s, 1);
+        Stream<String> stringStream = collection1.stream().filter(s -> s.length()<2);
+        Map<String, Integer> result = stringStream.collect(Collectors.toMap(s -> s, s -> 1, Integer::sum));
+        List<String> list = collection1.stream().filter(s -> s.length()>1).collect(Collectors.toList());
+        list.forEach(s -> {
+            if (s.contains("-")) {
+                result.put(String.valueOf(s.charAt(0)), s.charAt(2)-48);
             }
-        }
-        return hashMap;
+        });
+        return result;
     }
 
     private Map<String, Integer> getStringIntegerMap(Map<String, List<String>> object, Map<String, Integer> map) {
-        for (List<String> stringList : object.values()) {
-            for (String s : stringList) {
-                if (map.containsKey(s)) {
-                    map.put(s, map.get(s) - map.get(s) / 3);
-                }
+        object.values().forEach(list ->list.forEach(s -> {
+            if (map.containsKey(s)) {
+                map.put(s, map.get(s) - map.get(s) / 3);
             }
-        }
+        }));
         return map;
     }
 }

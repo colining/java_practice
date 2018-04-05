@@ -2,6 +2,7 @@ package cn.school.thoughtworks.section3;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PracticeC {
     Map<String,Integer> createUpdatedCollection(List<String> collectionA, Map<String,List<String>> object) {
@@ -11,26 +12,19 @@ public class PracticeC {
     }
 
     private Map<String, Integer> getStringIntegerMap(Map<String, List<String>> object, Map<String, Integer> map) {
-        for (List<String> stringList : object.values()) {
-            for (String str : stringList) {
-                if (map.containsKey(str)) {
-                    map.put(str, map.get(str) - map.get(str)/3);
-                }
+
+        object.values().forEach(list -> list.forEach(str ->{
+            if (map.containsKey(str)) {
+                map.put(str, map.get(str) - map.get(str)/3);
             }
-        }
+        }));
         return map;
     }
 
     Map<String,Integer> countSameElements(List<String> collection1) {
-        //实现练习要求，并改写该行代码。
-        Map<String, Integer> hashMap = new HashMap<>();
-        for (String s : collection1) {
-            if (hashMap.containsKey(s)) {
-                hashMap.put(s, hashMap.get(s) + 1);
-            }else {
-                hashMap.put(s, 1);
-            }
-        }
-        return hashMap;
+//        //实现练习要求，并改写该行代码。
+
+        Map<String, Integer> result = collection1.stream().collect(Collectors.toMap(s -> s, s -> 1, Integer::sum));
+        return result;
     }
 }
